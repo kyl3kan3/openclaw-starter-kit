@@ -17,6 +17,9 @@ Good for: self-hosters, homelab tinkerers, and builders who want an always-on ag
 New to OpenClaw entirely? Start with the zero-to-agent walkthrough:
 **→ [OpenClaw for Beginners: Zero to Autonomous Agent in One Afternoon](https://marketmai.com/blog/openclaw-beginner-guide-2026/)**
 
+Still deciding whether to run it on a Pi, VPS, home node, or hosted stack? Use the cost model first:
+**→ [Self-Hosted AI Agent Cost Benchmark 2026](https://marketmai.com/resources/self-hosted-ai-agent-cost-benchmark-2026/)**
+
 ## Quickstart
 
 ```bash
