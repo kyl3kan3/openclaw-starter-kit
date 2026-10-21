@@ -15,6 +15,8 @@ An OpenClaw agent can run commands, read files, and message people on your behal
 
 ## Keep it patched
 - [ ] **Update regularly** (`npm update -g openclaw` or pull the latest image).
-- [ ] **Track advisories.** Full hardening walkthrough → https://marketmai.com/blog/openclaw-cve-33579-patch-hardening-guide/
+- [ ] **Track advisories** for OpenClaw and dependencies (`npm update -g openclaw`).
 
-Found a security issue in this kit? Open an issue (no secrets in the report) or email the maintainer.
+## Reporting vulnerabilities
+
+Please **do not** open public issues for security problems. Open a [GitHub Security Advisory](https://github.com/kyl3kan3/openclaw-starter-kit/security/advisories/new) or contact the maintainer privately. Include steps to reproduce and impact; do not include live secrets.

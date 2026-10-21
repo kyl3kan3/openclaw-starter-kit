@@ -1,0 +1,32 @@
+# Meeting processor — example configuration
+
+sources:
+  - name: fathom
+    enabled: false
+    api_key_env: FATHOM_API_KEY
+    polling_interval_minutes: 15
+  - name: zoom
+    enabled: false
+  - name: googleMeet
+    enabled: false
+
+tasks:
+  provider: todoist
+  auto_create: false
+  default_project: Meetings
+
+notifications:
+  approval_queue:
+    channel: telegram
+    topic: meeting-approvals
+    enabled: true
+
+extraction:
+  include_ownership: true
+  include_deadlines: true
+
+waiting_on:
+  enabled: true
+  check_times:
+    - "8:00 AM"
+    - "4:00 PM"

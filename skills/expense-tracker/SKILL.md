@@ -26,5 +26,3 @@ Turns a photo of a receipt into a logged row. Forward a receipt to your OpenClaw
 ## Guardrails
 - Never fabricate a total. Low-confidence reads must be confirmed with the user.
 - Read-only on everything except the single expense sheet.
-
-Full build + OCR tuning walkthrough → https://marketmai.com/blog/expense-tracking-openclaw-telegram-guide/

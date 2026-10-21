@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        id: version
+        run: echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Build release notes
+        id: notes
+        run: |
+          VERSION="${GITHUB_REF_NAME}"
+          PREV=$(git describe --tags --abbrev=0 "${VERSION}^" 2>/dev/null || echo "")
+          if [[ -n "$PREV" ]]; then
+            BODY=$(git log --pretty=format:'- %s (%h)' "${PREV}..${VERSION}")
+          else
+            BODY=$(git log --pretty=format:'- %s (%h)' -20)
+          fi
+          {
+            echo "## OpenClaw Starter Kit ${VERSION}"
+            echo ""
+            echo "### Changes"
+            echo "$BODY"
+            echo ""
+            echo "### Quick start"
+            echo '```bash'
+            echo "git clone https://github.com/${GITHUB_REPOSITORY}.git"
+            echo "cd $(basename "$GITHUB_REPOSITORY")"
+            echo "cp .env.example .env"
+            echo "./install.sh"
+            echo '```'
+          } > release-notes.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: release-notes.md
+          generate_release_notes: true
