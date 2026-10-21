@@ -1,0 +1,41 @@
+name: Bug report
+description: Something broke in the starter kit or installer
+title: "[bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Do not paste API keys, tokens, or full `.env` contents.
+  - type: input
+    id: version
+    attributes:
+      label: Starter kit commit or tag
+      placeholder: e.g. main @ abc1234
+  - type: dropdown
+    id: os
+    attributes:
+      label: OS
+      options:
+        - Raspberry Pi OS / Debian
+        - Ubuntu / other Linux
+        - macOS
+        - Docker
+        - WSL2
+        - Other
+  - type: input
+    id: node
+    attributes:
+      label: Node.js version
+      placeholder: node -v
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: What you ran and what you expected
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant output (sanitized)
+      placeholder: Installer or openclaw error text

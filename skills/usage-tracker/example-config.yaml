@@ -1,0 +1,36 @@
+# Usage tracker — example configuration (copy to your OpenClaw config dir)
+
+alerts:
+  daily_limit_usd: 50
+  weekly_limit_usd: 300
+  monthly_limit_usd: 1000
+
+notifications:
+  - channel: telegram
+    topic: usage
+    enabled: true
+
+reports:
+  daily:
+    enabled: true
+    time: "6:00 AM"
+    format: brief
+  weekly:
+    enabled: true
+    day: Sunday
+    time: "7:00 AM"
+    format: detailed
+
+services:
+  - name: openai
+    enabled: true
+    keys_env:
+      - OPENAI_API_KEY
+  - name: anthropic
+    enabled: true
+    keys_env:
+      - ANTHROPIC_API_KEY
+  - name: google
+    enabled: false
+    keys_env:
+      - GEMINI_API_KEY

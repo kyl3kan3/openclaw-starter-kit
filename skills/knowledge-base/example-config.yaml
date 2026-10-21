@@ -1,0 +1,31 @@
+# Knowledge base RAG — example configuration
+
+sources:
+  url:
+    enabled: true
+  youtube:
+    enabled: true
+    extract_transcripts: true
+  twitter:
+    enabled: false
+    auto_expand_threads: true
+  pdf:
+    enabled: true
+    max_file_size_mb: 50
+
+storage:
+  type: sqlite
+  path: ~/.openclaw/knowledge.db
+
+vector_db:
+  type: sqlite-vec
+  enabled: true
+
+retrieval:
+  similarity_threshold: 0.7
+  max_results: 10
+  time_weight: 0.3
+
+query:
+  default_limit: 5
+  time_range: all

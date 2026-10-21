@@ -1,80 +1,128 @@
-# OpenClaw Starter Kit 🦞
+# OpenClaw Starter Kit
 
-> One command to a running, self-hosted [OpenClaw](https://github.com/openclaw/openclaw) agent — Raspberry Pi + Ollama friendly, with hardened defaults and curated example skills.
+**One command to a hardened, self-hosted [OpenClaw](https://github.com/openclaw/openclaw) agent — tuned for Raspberry Pi and Ollama, with copy-paste example skills.**
 
-The fastest path from `git clone` to a working autonomous agent. Sensible security defaults, a local-model config so you can run it for free, and a few real skills to copy.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![CI](https://github.com/kyl3kan3/openclaw-starter-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/kyl3kan3/openclaw-starter-kit/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/kyl3kan3/openclaw-starter-kit?label=release)](https://github.com/kyl3kan3/openclaw-starter-kit/releases)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](./LICENSE)
+<!-- Demo: replace with install GIF or asciinema once recorded -->
+<!-- [![asciicast](https://asciinema.org/a/PLACEHOLDER.svg)](https://asciinema.org/a/PLACEHOLDER) -->
 
 ---
 
-## What this is / who it's for
+## Why use this?
 
-OpenClaw is a self-hosted AI agent that lives on your own hardware. Getting from a fresh install to a *safe, useful* agent means wiring up a model, locking down the gateway, and writing your first skills. This kit gives you opinionated, working defaults for all three so you can skip the yak-shaving.
+OpenClaw gives you an autonomous agent on your own hardware. Going from `git clone` to something **safe and useful** means choosing models, locking down the gateway, and writing skills. This kit ships:
 
-Good for: self-hosters, homelab tinkerers, and builders who want an always-on agent without a per-token cloud bill.
+- **Loopback-first security defaults** — gateway on `127.0.0.1`, secrets in `.env`, checklist in [SECURITY.md](./SECURITY.md)
+- **Ollama-first model routing** — run cheap/local turns for free; optional cloud escalation
+- **Curated example skills** — expense tracking, API usage, meetings, knowledge base ([`skills/`](./skills))
+- **Docker option** — [`docker-compose.yml`](./docker-compose.yml) for container hosts
 
-New to OpenClaw entirely? Start with the zero-to-agent walkthrough:
-**→ [OpenClaw for Beginners: Zero to Autonomous Agent in One Afternoon](https://marketmai.com/blog/openclaw-beginner-guide-2026/)**
+Good for homelabs, Raspberry Pi builders, and anyone who wants an always-on agent without per-token cloud bills.
 
-Still deciding whether to run it on a Pi, VPS, home node, or hosted stack? Use the cost model first:
-**→ [Self-Hosted AI Agent Cost Benchmark 2026](https://marketmai.com/resources/self-hosted-ai-agent-cost-benchmark-2026/)**
-
-## Quickstart
+## Quick start
 
 ```bash
 git clone https://github.com/kyl3kan3/openclaw-starter-kit.git
 cd openclaw-starter-kit
-cp .env.example .env      # fill in your keys / model choice
-./install.sh              # installs OpenClaw (Node 22+) and runs onboarding
+cp .env.example .env    # edit model + optional API keys
+./install.sh
 ```
 
-Prefer containers? See [`docker-compose.yml`](./docker-compose.yml) for a minimal OpenClaw + Ollama stack.
+Validate without installing:
 
-Full step-by-step with screenshots:
-**→ [The Definitive OpenClaw Installation Guide](https://marketmai.com/blog/openclaw-setup-guide-launch/)**
+```bash
+cp .env.example .env
+./install.sh --dry-run --skip-onboard
+```
 
-## Run it 100% free with local models
+## Requirements
 
-`.env.example` ships with an Ollama-first config: a small local model handles routing and cheap turns, and you only escalate to a hosted model when a task actually needs it. That hybrid setup is how you get an always-on agent for ~$0/mo.
+| Component | Notes |
+|-----------|--------|
+| **Node.js 22+** | Required for OpenClaw (`node -v`) |
+| **npm** | Used to install the `openclaw` CLI globally |
+| **Ollama** (recommended) | Local models; [install guide](https://ollama.com/download) |
+| **Raspberry Pi** | Tested mindset: Pi 5 (8GB), small models (`llama3.2:3b`), watch thermals |
+| **Linux / macOS** | Primary targets for `install.sh` |
+| **Docker** (optional) | Use `docker compose up` instead of `install.sh` |
 
-**→ [OpenClaw + Ollama: Run Your Agent 100% Free (model picks + routing config)](https://marketmai.com/blog/openclaw-ollama-free-local-models/)**
+Windows: use WSL2 or Docker; native `install.sh` is not supported.
 
-## Run it on a Raspberry Pi
+## Configuration
 
-The defaults here are tuned to run headless on a Pi 5 (8GB). Watch for thermal throttling under sustained load and keep the model small.
+All settings live in `.env` (from [`.env.example`](./.env.example)):
 
-**→ [OpenClaw on a Raspberry Pi: Complete Guide](https://marketmai.com/blog/openclaw-raspberry-pi-complete-guide/)**
+| Variable | Purpose |
+|----------|---------|
+| `OPENCLAW_LOCAL_MODEL` | Default Ollama model (e.g. `ollama/llama3.2:3b`) |
+| `OLLAMA_HOST` | Ollama API URL |
+| `OPENCLAW_BIND` / `OPENCLAW_PORT` | Gateway bind address (keep `127.0.0.1`) |
+| `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` | Optional hosted models |
+| `TELEGRAM_BOT_TOKEN` / `DISCORD_BOT_TOKEN` | Optional messaging channels |
 
-## Included example skills
+After install, copy skills from [`skills/`](./skills) into your OpenClaw workspace.
 
-The [`skills/`](./skills) folder has working examples you can copy and adapt:
+## Skills included
 
-- **expense-tracker** — forward a receipt photo to Telegram; the agent parses it and logs to a sheet. [Deep-dive →](https://marketmai.com/blog/expense-tracking-openclaw-telegram-guide/)
+| Skill | Summary |
+|-------|---------|
+| [expense-tracker](./skills/expense-tracker) | Receipt photo → spreadsheet row |
+| [usage-tracker](./skills/usage-tracker) | API spend and budget alerts |
+| [meeting-processor](./skills/meeting-processor) | Action items from transcripts |
+| [knowledge-base](./skills/knowledge-base) | Personal RAG over your sources |
 
-More on how skills work:
-**→ [OpenClaw Skills: How to Build Custom Skills That Automate Anything](https://marketmai.com/blog/openclaw-custom-skills-productivity/)**
+Attribution and import notes: [skills/ATTRIBUTION.md](./skills/ATTRIBUTION.md).
 
-## Hardening / security defaults
+## Security
 
-This kit binds the gateway to loopback, keeps secrets in `.env`, and ships a [`SECURITY.md`](./SECURITY.md) checklist. **Read it before exposing anything to a network.**
+Read [SECURITY.md](./SECURITY.md) before exposing the gateway beyond localhost. Use Tailscale or WireGuard instead of opening router ports.
 
-**→ [OpenClaw Security Hardening Guide](https://marketmai.com/blog/openclaw-cve-33579-patch-hardening-guide/)**
+## Troubleshooting
 
-## Make it earn
+| Symptom | Fix |
+|---------|-----|
+| `No .env found` | `cp .env.example .env` |
+| `Node … requires Node 22` | Upgrade Node via [nodejs.org](https://nodejs.org) or nvm |
+| `OPENCLAW_BIND=0.0.0.0 is not allowed` | Set `OPENCLAW_BIND=127.0.0.1` in `.env` |
+| Ollama model pull fails | Run `ollama pull llama3.2:3b` manually; check disk/RAM |
+| Onboarding exits early | Re-run `openclaw onboard` after fixing errors |
+| Pi feels slow / throttles | Use a smaller model; improve cooling; avoid huge context |
 
-Once you've got a reliable agent, the same infrastructure can run a solo business — setup-as-a-service, white-label assistants, monitoring subscriptions.
+Installer flags: `./install.sh --help`
 
-**→ [The One-Person Company Playbook: Running a Solo Business with OpenClaw Agents](https://marketmai.com/blog/one-person-company-openclaw-agents/)**
+## FAQ
+
+**Is this a fork of OpenClaw?**  
+No. It installs the upstream `openclaw` npm package and adds opinionated defaults plus example skills.
+
+**Can I run 100% offline?**  
+Yes, with Ollama only — leave hosted API keys blank in `.env`.
+
+**Does this work on a VPS?**  
+Yes on Linux VPS with Node 22+. Still bind to loopback and use a VPN/tunnel for remote access.
+
+**How do I add my own skill?**  
+Add a folder under `skills/` with a `SKILL.md` (see existing examples), then copy it into your agent workspace.
+
+**Where do I report bugs?**  
+[GitHub Issues](https://github.com/kyl3kan3/openclaw-starter-kit/issues) — see [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+## Development
+
+```bash
+./scripts/lint.sh              # shellcheck + bash -n
+./install.sh --dry-run         # CI-style installer check
+```
 
 ## Contributing
 
-Issues and PRs welcome — new example skills, platform install notes, and hardening improvements especially. Keep additions real and tested.
+Issues and PRs welcome — especially new **generic** example skills, platform notes, and hardening improvements. See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 
-[MIT](./LICENSE) — do whatever, no warranty.
+[MIT](./LICENSE) — no warranty.
 
----
-
-Guides & operator playbooks: **[MarketMai](https://marketmai.com)** · Built on [OpenClaw](https://github.com/openclaw/openclaw).
+Built on [OpenClaw](https://github.com/openclaw/openclaw).
